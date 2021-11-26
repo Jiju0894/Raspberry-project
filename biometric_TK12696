@@ -3,6 +3,8 @@ import time
 import serial
 import os, time
 from pyfingerprint.pyfingerprint import PyFingerprint
+import sys
+import urllib3
 
 
 gpio.setwarnings(False)
@@ -20,7 +22,7 @@ positionNumber=0
 
 
 
-##BASE_URL = "http://emblocation.wizzie.online/notify.php?"
+BASE_URL = "http://14.99.206.154:8080/EG/mail.jsp?"
 
 gpio.setup(enrol, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(delet, gpio.IN, pull_up_down=gpio.PUD_UP)
@@ -28,7 +30,7 @@ gpio.setup(inc, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(dec, gpio.IN, pull_up_down=gpio.PUD_UP)
 
 try:
-    f = PyFingerprint('/dev/ttyAMA0', 57600, 0xFFFFFFFF, 0x00000000)
+    f = PyFingerprint('/dev/ttyS0', 57600, 0xFFFFFFFF, 0x00000000)
 
     if ( f.verifyPassword() == False ):
         raise ValueError('The given fingerprint sensor password is wrong!')
@@ -86,13 +88,13 @@ def searchFinger():
             print('Found template at position #' + str(positionNumber))
             time.sleep(2)
 
-##            hom = 'http://emblocation.wizzie.online/notify.php?'+'lat='+str(lat_in_degrees)+'&&lng='+ str(long_in_degrees) +'&&spd='+str(spd_in_kmphr)#+'&&id=user1'
-##            http = urllib3.PoolManager()
-##            resp = http.request('GET', hom)
-##            print(resp.status)
-##            print(hom)
-##    
-##            print("sent")
+            hom = 'http://14.99.206.154:8080/EG/mail.jsp?'+'a1='+str(positionNumber)
+            http = urllib3.PoolManager()
+            resp = http.request('GET', hom)
+            print(resp.status)
+            print(hom)
+    
+            print("sent")
 
 
     except Exception as e:
